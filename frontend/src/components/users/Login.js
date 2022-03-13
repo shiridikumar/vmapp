@@ -21,30 +21,27 @@ const Login = (props) => {
         color: "white",
     }
     const navigate = useNavigate();
-
-   
-
-    const [loginUser, { loading }] = useMutation(loginmut, {
-        update(
-          _,
-          {
+    // const [loginUser, { loading }] = useMutation(loginmut, {
+    //     update(
+    //       _,
+    //       {
             
-          }
-        ) {
+    //       }
+    //     ) {
          
-        },
-        onError(err) {
+    //     },
+    //     onError(err) {
 
-        },
-      });
+    //     },
+    //   });
 
     const [logintype, settype] = useState(0);
 
     const Click = async () => {
     //     console.log(email);
-        // navigate("/vmguidelines");
-    //     console.log(password)
-        loginUser();
+        navigate("/vmguidelines");
+        console.log(password)
+        // loginUser();
 
         // if(logintype==1){
 
@@ -100,19 +97,19 @@ const Login = (props) => {
     )
 }
 
-const loginmut = gql`
-mutation(
-    $email:String!
-    $password:String!
-){
-    login(
-        email:"aayush",
-        password:"123456"
-    ){
-        id
-        createAt
-    }
-}
-`
+// const loginmut = gql`
+// mutation(
+//     $email:String!
+//     $password:String!
+// ){
+//     login(
+//         email:"aayush",
+//         password:"123456"
+//     ){
+//         id
+//         createAt
+//     }
+// }
+// `
 
 export default Login;

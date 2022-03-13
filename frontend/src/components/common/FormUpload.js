@@ -14,6 +14,7 @@ import { Worker } from '@react-pdf-viewer/core';
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import gql from "graphql-tag"
+import Navbar from "./Navbar";
 
 const FormUpload = () => {
   const [url, setUrl] = React.useState('');
@@ -25,7 +26,7 @@ const FormUpload = () => {
     files.length > 0 && setUrl(URL.createObjectURL(files[0]));
     setfile(files)
   };
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const row = []
   const upload = () => {
     console.log("uploading");
@@ -42,37 +43,11 @@ const FormUpload = () => {
 
       console.log("succesfully submitted");
       console.log(response.data)
-      for (var i = 0; i < response.data.length; i++) {
-        if (response.data[i][1] == "textbox") {
-          row.push(
-            <div className="fields">
-              <h3>{response.data[i][0]}</h3>
-              <TextField id="standard-basic" label="Standard" variant="standard" />
-            </div>
-          )
-        }
-        else if (response.data[i][1] == "file") {
-          row.push(
-          <div className="fields">
-            <h3>{response.data[i][0]}</h3>
-            <img src={require("./../img/formupload.png")} style={{ width: "150px", height: "100px" }} />
-          </div>)
-        }
-        else if (response.data[i][1] == "radio") {
-          row.push(
-          <div className="fields">
-            <h3>{response.data[i][0]}</h3>
-            <input type="checkbox" id="item1" name="vehicle1" value="box1" />
-            <label for="item1">checkbox 1</label><br />
-            <input type="checkbox" id="item2" name="vehicle2" value="box2" />
-            <label for="item2">checkbox 2</label><br />
-          </div>
-          )
-        }
+      
         // avigate("/VmForm",{state:{data:response.data}})
-
-
-      }
+        row.push(
+        <Button variant="contained" onClick={() => { navigate("/FormViewer", {state:{data:response.data}})}}>View Generated form</Button>
+        )
       setcontent(row)
       setgen(1);
     })
@@ -82,38 +57,20 @@ const FormUpload = () => {
 
   return (
     <div className="formupload">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              VmGuidelines
-            </Typography>
-
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <Navbar/>
       <div className="container pdfupload">
         <form enctype="multipart/form-data" method="POST" action="http://localhost:5000/FormUpload" style={{ width: "100%" }} >
           <div className="upload">
             {/* <img src={require('../img/formupload.png')} style={{ width: "150px", height: "100px" }}/> */}
             <label>
               <img src={require('../img/formupload.png')} style={{ height: "100px", width: "150px" }} />
-              <input type="file" name="myfile" accept=".pdf" style={{ display: "none" }} onChange={onChange} />
+              <input type="file" name="myfile" style={{ display: "none" }} onChange={onChange} />
               <h2>Upload File</h2>
             </label>
 
           </div>
           {url && generated != 1 && (
-          <div className="pdfpreview" style={{ height: '600px', width: "500px" }}>
+            <div className="pdfpreview" style={{ height: '600px', width: "500px" }}>
               <>
 
                 <div
@@ -130,16 +87,14 @@ const FormUpload = () => {
                 </div>
                 <label>
                   <Button variant="contained" onClick={() => { upload() }}>Submit</Button>
-                  {/* <input type="submit" style={{ display: "none" }} onChange={onChange} /> */}
+                  <input type="submit" style={{ display: "none" }} onChange={onChange} />
                 </label>
               </>
-          </div>
+            </div>
           )}
           {url && generated && (
-             content 
+            content
           )}
-
-
         </form>
       </div>
     </div>
